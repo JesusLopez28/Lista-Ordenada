@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node
+{
+    char data;
+    struct Node *next;
+} Node;
+
+typedef Node *pNode;
+typedef Node *Lista;
+
+void insertAsc(Lista *head, char data);
+void insertDesc(Lista *head, char data);
+void printList(Lista head);
+
+int main()
+{
+    Lista head = NULL;
+    //char caracteres[] = {'c', 'a', 'b', 'd', 'f'};
+    char caracteres[] = {'h', 'c', 'a', 'b', 'd', 'z', 'm', 'f', 'x', 'l', 't', 'q', 'y', 'n', 'u', 'o', 'j', 'v', 'w', 'e', 'i', 'r', 'k', 'p', 's', 'g'};
+
+    for (int i = 0; i < sizeof(caracteres) / sizeof(caracteres[0]); i++)
+    {
+        insertAsc(&head, caracteres[i]);
+    }
+
+    printf("Lista en orden ascendente: ");
+    printList(head);
+
+    return 0;
+}
+
+void insertAsc(Lista *head, char data)
+{
+    pNode new_node = (pNode)malloc(sizeof(Node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    if (*head == NULL || data < (*head)->data)
+    {
+        new_node->next = *head;
+        *head = new_node;
+    }
+    else
+    {
+        pNode current = *head;
+        while (current->next != NULL && data > current->next->data)
+        {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+    }
+}
+
+void insertDesc(Lista *head, char data)
+{
+    pNode new_node = (pNode)malloc(sizeof(Node));
+    new_node->data = data;
+    new_node->next = NULL;
+
+    if (*head == NULL || data > (*head)->data)
+    {
+        new_node->next = *head;
+        *head = new_node;
+    }
+    else
+    {
+        pNode current = *head;
+        while (current->next != NULL && data < current->next->data)
+        {
+            current = current->next;
+        }
+        new_node->next = current->next;
+        current->next = new_node;
+    }
+}
+
+void printList(Lista head)
+{
+    while (head != NULL)
+    {
+        printf("%c ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
